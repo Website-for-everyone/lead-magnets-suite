@@ -1,105 +1,301 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OBSIDIAN // Детейлинг студия & Защитные покрытия</title>
+  <title>APEX // Stealth PPF & Surface Protection Lab</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            pitch: '#050607',
+            surface: '#0E1013',
+            surfaceBorder: 'rgba(255, 255, 255, 0.08)',
+            coral: '#FF3366',
+            coralGlow: 'rgba(255, 51, 102, 0.15)',
+            textDim: '#7A808C'
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: 'Space Grotesk', sans-serif; background-color: #070709; color: #E4E4E7; }
-    .syne-font { font-family: 'Syne', sans-serif; }
-    .neon-lime { color: #A3E635; }
-    .neon-border { border-color: rgba(163, 230, 53, 0.35); }
-    .neon-glow { box-shadow: 0 0 30px rgba(163, 230, 53, 0.3); }
-    .carbon-card { background: rgba(18, 18, 22, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); }
+    .noise-bg {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    .spotlight {
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(255, 51, 102, 0.07), transparent 60%);
+    }
+    .glass-card {
+      background: linear-gradient(135deg, rgba(20, 22, 27, 0.7) 0%, rgba(14, 16, 19, 0.85) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(255, 51, 102, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(255, 51, 102, 0.12);
+    }
   </style>
 </head>
-<body class="selection:bg-[#A3E635] selection:text-black">
+<body class="bg-pitch text-white font-sans selection:bg-coral selection:text-black antialiased noise-bg relative overflow-x-hidden min-h-screen">
+  
+  <div id="spotlight-layer" class="pointer-events-none fixed inset-0 z-0 spotlight"></div>
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-coral opacity-[0.035] blur-[160px] pointer-events-none rounded-full"></div>
 
-  <header class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center border-b border-white/[0.08]">
-    <div class="syne-font text-2xl font-extrabold tracking-wider text-white flex items-center gap-2">
-      <span class="w-3.5 h-3.5 bg-[#A3E635]"></span> OBSIDIAN // DETAILING
-    </div>
-    <div class="flex items-center space-x-6 text-xs font-bold uppercase tracking-wider">
-      <a href="#calc" class="text-neutral-400 hover:text-white">Конфигуратор сметы</a>
-      <a href="https://t.me/idrisov_prod" target="_blank" class="bg-[#A3E635] text-black px-6 py-3 rounded-none font-bold uppercase tracking-widest text-xs hover:bg-[#BEF264] transition-all neon-glow">
-        Забронировать бокс
-      </a>
-    </div>
-  </header>
-
-  <section class="max-w-6xl mx-auto px-6 pt-20 pb-16">
-    <div class="inline-block px-3 py-1 border neon-border text-[#A3E635] text-xs font-mono uppercase tracking-widest mb-8">
-      ПРЕМИАЛЬНАЯ ЗАЩИТА ЛКП // ПОЛИУРЕТАН & КЕРАМИКА
-    </div>
-    <h1 class="syne-font text-5xl md:text-7xl font-extrabold text-white leading-tight uppercase mb-8">
-      ЗЕРКАЛЬНЫЙ БЛЕСК. <br>
-      <span class="neon-lime">БРОНЕВАЯ ЗАЩИТА.</span>
-    </h1>
-    <p class="text-neutral-400 max-w-2xl text-base md:text-lg mb-10 leading-relaxed font-normal">
-      Студия бескомпромиссного ухода за премиальными авто. Оклейка полиуретановыми пленками SunTek и Stek, восстановительная полировка без голограмм и керамические покрытия 9H.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 mb-20">
-      <a href="https://t.me/idrisov_prod" target="_blank" class="bg-[#A3E635] text-black font-extrabold px-8 py-4 uppercase tracking-widest text-xs hover:bg-[#BEF264] transition-all neon-glow text-center">
-        Записаться на бесплатный осмотр ЛКП
-      </a>
-      <a href="#calc" class="carbon-card text-white font-bold px-8 py-4 uppercase tracking-widest text-xs hover:border-[#A3E635] transition-all text-center">
-        Рассчитать смету онлайн
-      </a>
-    </div>
-
-    <!-- Interactive Detailing Configurator -->
-    <div id="calc" class="carbon-card p-8 md:p-12 mb-20">
-      <div class="text-center mb-8">
-        <h2 class="syne-font text-3xl font-extrabold uppercase text-white mb-2">Конфигуратор стоимости защиты</h2>
-        <p class="text-sm text-neutral-400">Выберите тип кузова и необходимый объем работ</p>
+  <!-- NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 border-b border-surfaceBorder/60 bg-pitch/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-2.5 bg-coral rounded-full animate-pulse shadow-[0_0_12px_#FF3366]"></div>
+        <span class="font-mono text-sm tracking-wider uppercase font-semibold text-white/95">APEX<span class="text-coral">_PPF_LAB</span></span>
+        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-surface border border-surfaceBorder text-textDim ml-2 hidden sm:inline-block">Stealth Division</span>
       </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-        <div>
-          <label class="block text-xs font-bold uppercase text-neutral-400 mb-2">Класс автомобиля:</label>
-          <select id="carType" class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 rounded text-white focus:outline-none focus:border-[#A3E635]">
-            <option value="1">Седан / Купе (BMW 3, Audi A5)</option>
-            <option value="1.2">Кроссовер (BMW X5, Cayenne)</option>
-            <option value="1.4">Внедорожник (G-Class, LC300)</option>
-          </select>
-        </div>
-        <div>
-          <label class="block text-xs font-bold uppercase text-neutral-400 mb-2">Пакет услуг:</label>
-          <select id="packageType" class="w-full bg-neutral-900 border border-neutral-700 px-4 py-3 rounded text-white focus:outline-none focus:border-[#A3E635]">
-            <option value="35000">Полировка + 2 слоя керамики (35 000 ₽)</option>
-            <option value="65000">Бронирование зон риска пленкой (65 000 ₽)</option>
-            <option value="185000">Полная оклейка кузова полиуретаном (185 000 ₽)</option>
-          </select>
-        </div>
-      </div>
+      <nav class="hidden md:flex items-center gap-8 text-sm text-textDim font-medium">
+        <a href="#materials" class="hover:text-white transition-colors">Полиуретановая броня</a>
+        <a href="#calculator" class="hover:text-white transition-colors">Калькулятор оклейки</a>
+        <a href="#supercars" class="hover:text-white transition-colors">Портфолио суперкаров</a>
+        <a href="#warranty" class="hover:text-white transition-colors">Пожизненная гарантия</a>
+      </nav>
 
-      <div class="p-6 bg-neutral-950 border neon-border flex flex-col md:flex-row justify-between items-center gap-4">
-        <div>
-          <div class="text-xs uppercase text-neutral-400">Итоговая расчетная смета:</div>
-          <div class="syne-font text-3xl font-black text-[#A3E635]" id="totalPrice">35 000 ₽</div>
-        </div>
-        <a href="https://t.me/idrisov_prod" target="_blank" class="bg-[#A3E635] text-black font-extrabold px-6 py-3 uppercase tracking-widest text-xs hover:bg-[#BEF264] transition-all">
-          Зафиксировать цену и дату
+      <div class="flex items-center gap-4">
+        <a href="#calculator" class="px-5 py-2.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider text-black bg-coral hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(255,51,102,0.25)]">
+          Забронировать бокс →
         </a>
       </div>
     </div>
-  </section>
+  </header>
+
+  <main class="relative z-10 pt-28">
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-6 py-20 lg:py-28 relative border-b border-surfaceBorder/40">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-surfaceBorder mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-coral"></span>
+          <span class="text-xs font-mono text-textDim uppercase tracking-wide">Лаборатория защиты премиальных авто // Москва-Сити</span>
+        </div>
+
+        <h1 class="text-5xl sm:text-7xl lg:text-8xl font-serif font-normal tracking-tight leading-[1.05] mb-8">
+          Броня кузова и <span class="italic text-coral underline decoration-coral/30 underline-offset-8">абсолютный</span> глянец.
+        </h1>
+
+        <p class="text-lg sm:text-xl text-textDim max-w-2xl leading-relaxed font-light mb-12">
+          Оклейка полиуретановыми пленками SunTek & Stek Ultra толщиной до 240 микрон с эффектом мгновенной терморегенерации царапин. Чистая комната с контролем пыли класса ISO 7.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
+          <a href="#calculator" class="px-8 py-4 rounded-xl bg-coral text-black font-bold uppercase tracking-wider hover:bg-white transition-all shadow-[0_0_30px_rgba(255,51,102,0.3)]">
+            Рассчитать смету на авто
+          </a>
+          <div class="px-5 py-4 rounded-xl bg-surface border border-surfaceBorder text-textDim flex items-center gap-3">
+            <span class="text-coral font-semibold">10 лет</span>
+            <span>официальной гарантии от пожелтения и отслоений</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY METRICS BAR -->
+      <div class="mt-24 pt-12 border-t border-surfaceBorder/60 grid grid-cols-2 md:grid-cols-4 gap-8 font-mono">
+        <div>
+          <div class="text-4xl font-serif font-light text-white mb-1">240 µm</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Максимальная толщина бронепленки</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-coral mb-1">100%</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Самозатягивание царапин от тепла</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-white mb-1">0 граней</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Подворот краев без видимых стыков</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-coral mb-1">3 бокса</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Стерильные изоляционные посты</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE INTERACTIVE PPF CALCULATOR -->
+    <section id="calculator" class="max-w-7xl mx-auto px-6 py-28 border-b border-surfaceBorder/40">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="text-xs font-mono text-coral uppercase tracking-widest block mb-3">// КОНФИГУРАТОР БРОНИРОВАНИЯ</span>
+          <h2 class="text-4xl sm:text-5xl font-serif font-normal">Сконфигурируй степень защиты авто</h2>
+        </div>
+        <p class="text-sm font-mono text-textDim max-w-sm">
+          Выбери класс кузова и комплекс оклейки — калькулятор покажет итоговую стоимость, время работы и толщину полиуретана.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="glass-card p-6 sm:p-8 rounded-2xl">
+            <label class="text-sm font-medium text-white/90 block mb-3">1. Класс транспортного средства</label>
+            <div class="grid grid-cols-3 gap-3 text-xs font-mono">
+              <button type="button" class="class-btn active py-3 px-3 rounded-xl border border-coral bg-coral/10 text-coral text-center transition-all" data-class="sedan">
+                Седан / Купе (911, M5)
+              </button>
+              <button type="button" class="class-btn py-3 px-3 rounded-xl border border-surfaceBorder bg-surface text-textDim text-center hover:border-coral/40 transition-all" data-class="suv">
+                Внедорожник (G63, Urus)
+              </button>
+              <button type="button" class="class-btn py-3 px-3 rounded-xl border border-surfaceBorder bg-surface text-textDim text-center hover:border-coral/40 transition-all" data-class="exotic">
+                Гиперкар (SF90, Revuelto)
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 sm:p-8 rounded-2xl">
+            <label class="text-sm font-medium text-white/90 block mb-3">2. Уровень бронирования кузова</label>
+            <div class="space-y-3 text-xs font-mono">
+              <label class="flex items-center justify-between p-4 rounded-xl bg-surface border border-coral/40 cursor-pointer transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="ppf-pack" value="full" checked class="w-4 h-4 accent-coral cursor-pointer">
+                  <div>
+                    <span class="font-bold block text-white">Full Body Stealth / Gloss</span>
+                    <span class="text-[11px] text-textDim block">Полная оклейка кузова с разбором и подворотом всех элементов</span>
+                  </div>
+                </div>
+                <span id="pack-full-price" class="text-coral font-bold text-sm">290 000 ₽</span>
+              </label>
+
+              <label class="flex items-center justify-between p-4 rounded-xl bg-surface border border-surfaceBorder cursor-pointer hover:border-coral/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="radio" name="ppf-pack" value="front" class="w-4 h-4 accent-coral cursor-pointer">
+                  <div>
+                    <span class="font-bold block text-white">Front Impact Zone (Зона риска)</span>
+                    <span class="text-[11px] text-textDim block">Капот, бампер, крылья, зеркала, оптика, стойки и полоса на крышу</span>
+                  </div>
+                </div>
+                <span id="pack-front-price" class="text-white font-bold text-sm">130 000 ₽</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculated Summary Card -->
+        <div class="lg:col-span-5">
+          <div class="glass-card p-8 rounded-2xl border-coral/40 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-40 h-40 bg-coral/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between pb-6 border-b border-surfaceBorder/60">
+              <span class="text-xs font-mono uppercase tracking-wider text-textDim">Смета бронирования</span>
+              <span class="px-2 py-0.5 rounded bg-coral/10 text-coral font-mono text-[10px] font-bold border border-coral/20">STEK ULTRA 240µm</span>
+            </div>
+
+            <div class="my-8">
+              <div class="text-xs font-mono text-textDim uppercase mb-1">Итоговая стоимость под ключ</div>
+              <div id="final-price" class="text-5xl font-serif text-white font-light mb-2">290 000 ₽</div>
+              <div class="text-xs font-mono text-coral flex items-center gap-2">
+                <span>🛡 Срок гарантийного талона:</span>
+                <span class="font-bold">10 лет (безусловная)</span>
+              </div>
+            </div>
+
+            <div class="space-y-4 pt-4 border-t border-surfaceBorder/60 text-xs font-mono">
+              <div class="flex justify-between">
+                <span class="text-textDim">Время работы в боксе:</span>
+                <span id="work-time" class="text-white font-semibold">4 рабочих дня</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-textDim">Покрытие гидрофобом:</span>
+                <span class="text-coral font-semibold">Керамика Gyeon PPF включена</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-textDim">Ближайший свободный бокс:</span>
+                <span class="text-accent font-semibold">Понедельник, 10:00</span>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-surfaceBorder/60">
+              <button onclick="alert('Бокс забронирован! Сервисный инженер связался в Telegram для фиксации времени заезда.')" class="w-full py-4 rounded-xl bg-coral text-black font-bold uppercase tracking-wider text-xs font-mono hover:bg-white transition-all shadow-[0_0_25px_rgba(255,51,102,0.25)]">
+                Зафиксировать слот и скидку 10%
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-6 py-16 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-xs text-textDim">
+      <div>
+        © 2026 APEX PPF DIVISION. ЛАБОРАТОРИЯ ЗАЩИТНЫХ ПОКРЫТИЙ.
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://t.me/idrisov_prod" target="_blank" class="hover:text-coral transition-colors">Telegram @idrisov_prod</a>
+        <span>Пресненская наб., 12 (Москва-Сити)</span>
+      </div>
+    </footer>
+  </main>
 
   <script>
-    function recalc() {
-      const mult = parseFloat(document.getElementById('carType').value);
-      const base = parseFloat(document.getElementById('packageType').value);
-      const total = Math.round(base * mult);
-      document.getElementById('totalPrice').innerText = total.toLocaleString() + ' ₽';
-    }
-    document.getElementById('carType').addEventListener('change', recalc);
-    document.getElementById('packageType').addEventListener('change', recalc);
-  </script>
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
 
-  <footer class="max-w-7xl mx-auto px-6 py-10 border-t border-white/[0.08] text-center text-xs text-neutral-500 font-mono">
-    OBSIDIAN DETAILING // IDRISOV_OS LEAD MAGNET 2026
-  </footer>
+    const finalPrice = document.getElementById('final-price');
+    const workTime = document.getElementById('work-time');
+    const packFullPrice = document.getElementById('pack-full-price');
+    const packFrontPrice = document.getElementById('pack-front-price');
+
+    let currentClass = 'sedan';
+
+    document.querySelectorAll('.class-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.class-btn').forEach(b => {
+          b.className = 'class-btn py-3 px-3 rounded-xl border border-surfaceBorder bg-surface text-textDim text-center hover:border-coral/40 transition-all';
+        });
+        btn.className = 'class-btn active py-3 px-3 rounded-xl border border-coral bg-coral/10 text-coral text-center transition-all';
+        currentClass = btn.getAttribute('data-class');
+        calcCost();
+      });
+    });
+
+    document.querySelectorAll('input[name="ppf-pack"]').forEach(r => {
+      r.addEventListener('change', calcCost);
+    });
+
+    function calcCost() {
+      const isFull = document.querySelector('input[name="ppf-pack"]:checked').value === 'full';
+
+      let baseFull = 290000;
+      let baseFront = 130000;
+
+      if (currentClass === 'suv') {
+        baseFull = 340000;
+        baseFront = 150000;
+        workTime.innerText = isFull ? '5 рабочих дней' : '2 рабочих дня';
+      } else if (currentClass === 'exotic') {
+        baseFull = 420000;
+        baseFront = 190000;
+        workTime.innerText = isFull ? '6 рабочих дней' : '3 рабочих дня';
+      } else {
+        workTime.innerText = isFull ? '4 рабочих дня' : '2 рабочих дня';
+      }
+
+      packFullPrice.innerText = `${baseFull.toLocaleString('ru-RU')} ₽`;
+      packFrontPrice.innerText = `${baseFront.toLocaleString('ru-RU')} ₽`;
+
+      const price = isFull ? baseFull : baseFront;
+      finalPrice.innerText = `${price.toLocaleString('ru-RU')} ₽`;
+    }
+
+    calcCost();
+  </script>
 </body>
 </html>

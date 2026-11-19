@@ -1,78 +1,277 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>APEX ACADEMY // Подготовка к ЕГЭ на 85+ баллов</title>
+  <title>AXIOM // Intensive Algorithmics & Olympiad Mathematics</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            carbon: '#060709',
+            surface: '#0F1014',
+            surfaceBorder: 'rgba(255, 255, 255, 0.08)',
+            violet: '#A855F7',
+            violetLight: '#C084FC',
+            violetGlow: 'rgba(168, 85, 247, 0.15)',
+            textDim: '#7E8391'
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: 'JetBrains Mono', monospace; background-color: #0E0E12; color: #F4F4F5; }
-    .title-font { font-family: 'Unbounded', sans-serif; }
-    .indigo-glow { box-shadow: 0 0 35px rgba(99, 102, 241, 0.35); }
-    .brutal-border { border: 2px solid #27272A; }
-    .brutal-card { background: #18181B; border: 2px solid #27272A; transition: transform 0.2s; }
-    .brutal-card:hover { transform: translateY(-4px); border-color: #6366F1; }
+    .noise-bg {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    .spotlight {
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(168, 85, 247, 0.07), transparent 60%);
+    }
+    .glass-card {
+      background: linear-gradient(135deg, rgba(20, 20, 27, 0.7) 0%, rgba(15, 16, 20, 0.85) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(168, 85, 247, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(168, 85, 247, 0.12);
+    }
   </style>
 </head>
-<body class="selection:bg-[#6366F1] selection:text-white">
+<body class="bg-carbon text-white font-sans selection:bg-violet selection:text-black antialiased noise-bg relative overflow-x-hidden min-h-screen">
+  
+  <div id="spotlight-layer" class="pointer-events-none fixed inset-0 z-0 spotlight"></div>
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[900px] h-[350px] bg-violet opacity-[0.035] blur-[160px] pointer-events-none rounded-full"></div>
 
-  <header class="max-w-7xl mx-auto px-6 py-6 flex justify-between items-center border-b brutal-border">
-    <div class="title-font text-xl font-bold tracking-tight text-white flex items-center gap-2">
-      <span class="w-3 h-3 bg-indigo-500"></span> APEX // ACADEMY
-    </div>
-    <div class="flex items-center space-x-6 text-xs font-bold uppercase">
-      <a href="#rates" class="text-neutral-400 hover:text-white">Программы</a>
-      <a href="https://t.me/idrisov_prod" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white px-5 py-2.5 rounded text-xs uppercase font-bold tracking-wider indigo-glow">
-        Пробный урок 0 ₽
-      </a>
+  <!-- NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 border-b border-surfaceBorder/60 bg-carbon/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-2.5 bg-violet rounded-full animate-pulse shadow-[0_0_12px_#A855F7]"></div>
+        <span class="font-mono text-sm tracking-wider uppercase font-semibold text-white/95">AXIOM<span class="text-violet">_STEM</span></span>
+        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-surface border border-surfaceBorder text-textDim ml-2 hidden sm:inline-block">Olympiad Prep</span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm text-textDim font-medium">
+        <a href="#curriculum" class="hover:text-white transition-colors">Стек программы</a>
+        <a href="#simulator" class="hover:text-white transition-colors">Предиктор поступления</a>
+        <a href="#results" class="hover:text-white transition-colors">Результаты МФТИ / ВШЭ</a>
+        <a href="#enroll" class="hover:text-white transition-colors">Вступительный контест</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <a href="#simulator" class="px-5 py-2.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider text-black bg-violet hover:bg-white transition-all duration-300 shadow-[0_0_20px_rgba(168,85,247,0.25)]">
+          Пройти срез знаний →
+        </a>
+      </div>
     </div>
   </header>
 
-  <section class="max-w-6xl mx-auto px-6 pt-20 pb-16">
-    <div class="inline-block px-3 py-1 bg-indigo-950 text-indigo-400 border border-indigo-800 text-xs font-bold uppercase mb-8">
-      ЕГЭ-2026 // ИНФОРМАТИКА & МАТЕМАТИКА
-    </div>
-    <h1 class="title-font text-4xl md:text-6xl font-black text-white leading-tight uppercase mb-8">
-      ПОСТУПЛЕНИЕ НА БЮДЖЕТ <br>
-      <span class="text-indigo-400">БЕЗ ЗУБРЕЖКИ И ВОДЫ.</span>
-    </h1>
-    <p class="text-neutral-400 max-w-2xl text-base md:text-lg mb-10 leading-relaxed font-normal">
-      Методология глубокого понимания алгоритмов. Средний балл выпускников — 88.4. 
-      Личный трекер прогресса, разбор сложных прототипов №24–27 и круглосуточная поддержка наставника.
-    </p>
-    <div class="flex flex-col sm:flex-row gap-4 mb-20">
-      <a href="https://t.me/idrisov_prod" target="_blank" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-4 rounded text-center uppercase tracking-wider text-sm indigo-glow">
-        Записаться на пробный урок
-      </a>
-      <a href="#rates" class="brutal-border text-neutral-300 font-bold px-8 py-4 rounded text-center uppercase tracking-wider text-sm hover:bg-zinc-800">
-        Тарифные планы
-      </a>
-    </div>
+  <main class="relative z-10 pt-28">
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-6 py-20 lg:py-28 relative border-b border-surfaceBorder/40">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-surfaceBorder mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-violet"></span>
+          <span class="text-xs font-mono text-textDim uppercase tracking-wide">Подготовка к перечневым олимпиадам I уровня & ЕГЭ на 95+</span>
+        </div>
 
-    <!-- Stats Matrix -->
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-24">
-      <div class="brutal-card p-6">
-        <div class="title-font text-3xl font-black text-indigo-400 mb-1">88.4</div>
-        <div class="text-xs text-neutral-400 uppercase">Средний балл ЕГЭ</div>
-      </div>
-      <div class="brutal-card p-6">
-        <div class="title-font text-3xl font-black text-white mb-1">42</div>
-        <div class="text-xs text-neutral-400 uppercase">Стобалльника</div>
-      </div>
-      <div class="brutal-card p-6">
-        <div class="title-font text-3xl font-black text-indigo-400 mb-1">100%</div>
-        <div class="text-xs text-neutral-400 uppercase">Поступление в топ-вузы</div>
-      </div>
-      <div class="brutal-card p-6">
-        <div class="title-font text-3xl font-black text-white mb-1">24/7</div>
-        <div class="text-xs text-neutral-400 uppercase">Проверка дз куратором</div>
-      </div>
-    </div>
-  </section>
+        <h1 class="text-5xl sm:text-7xl lg:text-8xl font-serif font-normal tracking-tight leading-[1.05] mb-8">
+          Фундаментальная математика и <span class="italic text-violet underline decoration-violet/30 underline-offset-8">алгоритмический</span> стек.
+        </h1>
 
-  <footer class="max-w-7xl mx-auto px-6 py-10 border-t brutal-border text-center text-xs text-neutral-500">
-    APEX ACADEMY // IDRISOV_OS LEAD MAGNET 2026
-  </footer>
+        <p class="text-lg sm:text-xl text-textDim max-w-2xl leading-relaxed font-light mb-12">
+          Интенсивные спринты от победителей Всероса и преподавателей МФТИ. Полный разбор олимпиадной дискретной математики, динамического программирования и теории графов для поступления на бюджет БВИ.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
+          <a href="#simulator" class="px-8 py-4 rounded-xl bg-violet text-black font-bold uppercase tracking-wider hover:bg-white transition-all shadow-[0_0_30px_rgba(168,85,247,0.3)]">
+            Рассчитать шансы на бюджет
+          </a>
+          <div class="px-5 py-4 rounded-xl bg-surface border border-surfaceBorder text-textDim flex items-center gap-3">
+            <span class="text-violet font-semibold">82%</span>
+            <span>учеников поступают без вступительных испытаний (БВИ)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY METRICS BAR -->
+      <div class="mt-24 pt-12 border-t border-surfaceBorder/60 grid grid-cols-2 md:grid-cols-4 gap-8 font-mono">
+        <div>
+          <div class="text-4xl font-serif font-light text-white mb-1">94.2</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Средний балл ЕГЭ выпускников</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-violet mb-1">47 дипломов</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Всероса и РСОШ I уровня в 2026</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-white mb-1">3.5:1</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Соотношение практики к теории</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-violet mb-1">0 воды</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Только автотесты в Codeforces-стиле</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE INTERACTIVE BUDGET PREDICTOR -->
+    <section id="simulator" class="max-w-7xl mx-auto px-6 py-28 border-b border-surfaceBorder/40">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="text-xs font-mono text-violet uppercase tracking-widest block mb-3">// АЛГОРИТМИЧЕСКИЙ ПРЕДИКТОР ПОСТУПЛЕНИЯ</span>
+          <h2 class="text-4xl sm:text-5xl font-serif font-normal">Смоделируй свой проходной балл</h2>
+        </div>
+        <p class="text-sm font-mono text-textDim max-w-sm">
+          Укажи текущий результат пробника и оставшееся время — алгоритм рассчитает вероятность бюджета на ФПМИ МФТИ / ПМИ ВШЭ.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="glass-card p-6 sm:p-8 rounded-2xl">
+            <div class="flex justify-between items-center mb-4">
+              <label class="text-sm font-medium text-white/90">Текущий балл за полный пробный вариант</label>
+              <span id="score-val" class="text-sm font-mono font-bold text-violet">68 баллов</span>
+            </div>
+            <input type="range" id="score-input" min="40" max="95" value="68" class="w-full h-1.5 bg-surface border border-surfaceBorder rounded-lg appearance-none cursor-pointer accent-violet">
+            <div class="flex justify-between text-[10px] font-mono text-textDim mt-2">
+              <span>База (40 б)</span>
+              <span>Крепкая середина (70 б)</span>
+              <span>Олимпиадник (90+ б)</span>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 sm:p-8 rounded-2xl">
+            <div class="flex justify-between items-center mb-4">
+              <label class="text-sm font-medium text-white/90">Количество месяцев до экзаменационной сессии</label>
+              <span id="months-val" class="text-sm font-mono font-bold text-violet">6 месяцев</span>
+            </div>
+            <input type="range" id="months-input" min="2" max="18" value="6" class="w-full h-1.5 bg-surface border border-surfaceBorder rounded-lg appearance-none cursor-pointer accent-violet">
+            <div class="flex justify-between text-[10px] font-mono text-textDim mt-2">
+              <span>Экспресс-спринт (2 мес)</span>
+              <span>Полгода (6 мес)</span>
+              <span>Полный цикл (12-18 мес)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculated Summary Card -->
+        <div class="lg:col-span-5">
+          <div class="glass-card p-8 rounded-2xl border-violet/40 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-40 h-40 bg-violet/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between pb-6 border-b border-surfaceBorder/60">
+              <span class="text-xs font-mono uppercase tracking-wider text-textDim">Прогноз поступления на бюджет</span>
+              <span class="px-2 py-0.5 rounded bg-violet/10 text-violet font-mono text-[10px] font-bold border border-violet/20">PREDICTOR AI</span>
+            </div>
+
+            <div class="my-8">
+              <div class="text-xs font-mono text-textDim uppercase mb-1">Прогнозируемый финальный балл</div>
+              <div id="target-score" class="text-5xl font-serif text-white font-light mb-2">92 балла</div>
+              <div class="text-xs font-mono text-violet flex items-center gap-2">
+                <span>🎯 Вероятность бюджета:</span>
+                <span id="chance-val" class="font-bold">86% (ФПМИ / ВШЭ ПМИ)</span>
+              </div>
+            </div>
+
+            <div class="space-y-4 pt-4 border-t border-surfaceBorder/60 text-xs font-mono">
+              <div class="flex justify-between">
+                <span class="text-textDim">Рекомендованный темп:</span>
+                <span id="hours-rec" class="text-white font-semibold">6 часов в неделю</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-textDim">Ключевая точка роста:</span>
+                <span class="text-violet font-semibold">Задачи с параметром (№18) + ТЧ (№19)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-textDim">Экономия на платном обучении:</span>
+                <span class="text-accent font-semibold">до 3 200 000 ₽ за 4 года бакалавриата</span>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-surfaceBorder/60">
+              <button onclick="alert('Вы записаны на бесплатный диагностический контест! Ссылка отправлена в Telegram.')" class="w-full py-4 rounded-xl bg-violet text-black font-bold uppercase tracking-wider text-xs font-mono hover:bg-white transition-all shadow-[0_0_25px_rgba(168,85,247,0.25)]">
+                Получить диагностический тест
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-6 py-16 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-xs text-textDim">
+      <div>
+        © 2026 AXIOM STEM. ОЛИМПИАДНАЯ МАТЕМАТИКА И АЛГОРИТМЫ.
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://t.me/idrisov_prod" target="_blank" class="hover:text-violet transition-colors">Telegram @idrisov_prod</a>
+        <span>МФТИ / ВШЭ Campus Partner</span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
+
+    const scoreInput = document.getElementById('score-input');
+    const monthsInput = document.getElementById('months-input');
+    const scoreVal = document.getElementById('score-val');
+    const monthsVal = document.getElementById('months-val');
+    const targetScore = document.getElementById('target-score');
+    const chanceVal = document.getElementById('chance-val');
+    const hoursRec = document.getElementById('hours-rec');
+
+    function calcAdmission() {
+      const current = parseInt(scoreInput.value);
+      const months = parseInt(monthsInput.value);
+
+      scoreVal.innerText = `${current} баллов`;
+      monthsVal.innerText = `${months} месяцев`;
+
+      // Growth formula based on Axiom sprint methodology
+      let growth = Math.round(months * 3.8);
+      let predicted = Math.min(99, current + growth);
+
+      targetScore.innerText = `${predicted} балла`;
+
+      if (predicted >= 94) {
+        chanceVal.innerText = '94% (ФПМИ МФТИ / ВШЭ ПМИ)';
+        chanceVal.className = 'font-bold text-accent';
+        hoursRec.innerText = '5-6 часов/нед (Олимпиадный пул)';
+      } else if (predicted >= 84) {
+        chanceVal.innerText = '82% (МГТУ им. Баумана / МГУ ВМК)';
+        chanceVal.className = 'font-bold text-violet';
+        hoursRec.innerText = '7-8 часов/нед (Параметры + ТЧ)';
+      } else {
+        chanceVal.innerText = '64% (Технические вузы РФ ТОП-10)';
+        chanceVal.className = 'font-bold text-yellow-400';
+        hoursRec.innerText = '9-10 часов/нед (Интенсив 1-я часть + Планиметрия)';
+      }
+    }
+
+    scoreInput.addEventListener('input', calcAdmission);
+    monthsInput.addEventListener('input', calcAdmission);
+    calcAdmission();
+  </script>
 </body>
 </html>

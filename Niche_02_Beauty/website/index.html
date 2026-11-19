@@ -1,78 +1,307 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ATELIER VELVET & BLADE // Премиальный барбершоп</title>
+  <title>OBSIDIAN // Private Grooming Atelier & Gentlemen's Club</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;700;900&family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            serif: ['"Instrument Serif"', 'serif'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            noir: '#070708',
+            surface: '#111114',
+            surfaceBorder: 'rgba(255, 255, 255, 0.08)',
+            gold: '#D4AF37',
+            goldLight: '#E8CA65',
+            goldGlow: 'rgba(212, 175, 55, 0.15)',
+            textDim: '#8A8D93'
+          }
+        }
+      }
+    }
+  </script>
   <style>
-    body { font-family: 'Inter', sans-serif; background-color: #0B0B0D; color: #E8E8E8; }
-    .luxury-font { font-family: 'Cinzel', serif; }
-    .gold-accent { color: #D4AF37; }
-    .gold-border { border-color: rgba(212, 175, 55, 0.3); }
-    .gold-glow { box-shadow: 0 10px 40px -10px rgba(212, 175, 55, 0.25); }
-    .dark-card { background: rgba(20, 20, 24, 0.85); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.07); }
+    .noise-bg {
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+    .spotlight {
+      background: radial-gradient(800px circle at var(--mouse-x, 50%) var(--mouse-y, 30%), rgba(212, 175, 55, 0.07), transparent 60%);
+    }
+    .glass-card {
+      background: linear-gradient(135deg, rgba(22, 22, 26, 0.7) 0%, rgba(17, 17, 20, 0.85) 100%);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .glass-card:hover {
+      border-color: rgba(212, 175, 55, 0.3);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px -10px rgba(212, 175, 55, 0.12);
+    }
   </style>
 </head>
-<body class="selection:bg-[#D4AF37] selection:text-black">
+<body class="bg-noir text-white font-sans selection:bg-gold selection:text-black antialiased noise-bg relative overflow-x-hidden min-h-screen">
+  
+  <div id="spotlight-layer" class="pointer-events-none fixed inset-0 z-0 spotlight"></div>
+  <div class="fixed top-0 left-1/2 -translate-x-1/2 w-[850px] h-[350px] bg-gold opacity-[0.035] blur-[160px] pointer-events-none rounded-full"></div>
 
-  <header class="max-w-7xl mx-auto px-6 py-8 flex justify-between items-center border-b border-white/[0.08]">
-    <div class="luxury-font text-xl font-bold tracking-[0.2em] gold-accent">VELVET & BLADE</div>
-    <div class="flex items-center space-x-8 text-xs tracking-widest uppercase">
-      <a href="#services" class="text-neutral-400 hover:text-white transition-colors">Услуги & Прайс</a>
-      <a href="#masters" class="text-neutral-400 hover:text-white transition-colors">Мастера</a>
-      <a href="https://t.me/idrisov_prod" target="_blank" class="px-5 py-2.5 border gold-border gold-accent hover:bg-[#D4AF37] hover:text-black transition-all font-semibold">
-        Онлайн-запись 24/7
-      </a>
+  <!-- NAVIGATION -->
+  <header class="fixed top-0 left-0 right-0 z-50 border-b border-surfaceBorder/60 bg-noir/80 backdrop-blur-md">
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-2.5 h-2.5 bg-gold rounded-full animate-pulse shadow-[0_0_12px_#D4AF37]"></div>
+        <span class="font-mono text-sm tracking-wider uppercase font-semibold text-white/95">OBSIDIAN<span class="text-gold">_ATELIER</span></span>
+        <span class="text-[10px] font-mono uppercase px-2 py-0.5 rounded bg-surface border border-surfaceBorder text-textDim ml-2 hidden sm:inline-block">Private Membership</span>
+      </div>
+
+      <nav class="hidden md:flex items-center gap-8 text-sm text-textDim font-medium">
+        <a href="#rituals" class="hover:text-white transition-colors">Ритуалы & Уход</a>
+        <a href="#configurator" class="hover:text-white transition-colors">Архитектура стиля</a>
+        <a href="#masters" class="hover:text-white transition-colors">Шеф-барберы</a>
+        <a href="#club" class="hover:text-white transition-colors">Клубные привилегии</a>
+      </nav>
+
+      <div class="flex items-center gap-4">
+        <a href="#configurator" class="px-5 py-2.5 rounded-full text-xs font-mono font-semibold uppercase tracking-wider text-black bg-gold hover:bg-goldLight transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.25)]">
+          Забронировать кресло →
+        </a>
+      </div>
     </div>
   </header>
 
-  <section class="max-w-6xl mx-auto px-6 pt-24 pb-20 text-center">
-    <div class="inline-block px-4 py-1 border gold-border text-xs gold-accent tracking-[0.25em] uppercase mb-8">
-      АТЕЛЬЕ МУЖСКОГО СТИЛЯ // МОСКВА
-    </div>
-    <h1 class="luxury-font text-5xl md:text-7xl font-bold leading-tight mb-8">
-      РИТУАЛ БЕЗУПРЕЧНОСТИ <br>
-      <span class="gold-accent italic">И ЧИСТЫХ ЛИНИЙ</span>
-    </h1>
-    <p class="text-neutral-400 max-w-2xl mx-auto text-base md:text-lg mb-12 font-light leading-relaxed">
-      Пространство закрытого мужского клуба. Авторские стрижки, опасное бритье с распариванием горячими полотенцами и уход за бородой от ведущих шеф-барберов.
-    </p>
-    <div class="flex flex-col sm:flex-row justify-center gap-5 mb-24">
-      <a href="https://t.me/idrisov_prod" target="_blank" class="bg-[#D4AF37] text-black font-bold px-8 py-4 text-xs tracking-[0.2em] uppercase hover:bg-[#E5C158] transition-all gold-glow">
-        Забронировать визит
-      </a>
-      <a href="#services" class="border border-white/20 text-neutral-300 font-semibold px-8 py-4 text-xs tracking-[0.2em] uppercase hover:bg-white/[0.05] transition-all">
-        Изучить услуги
-      </a>
-    </div>
+  <main class="relative z-10 pt-28">
+    <!-- HERO SECTION -->
+    <section class="max-w-7xl mx-auto px-6 py-20 lg:py-28 relative border-b border-surfaceBorder/40">
+      <div class="max-w-4xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface border border-surfaceBorder mb-8">
+          <span class="w-1.5 h-1.5 rounded-full bg-gold"></span>
+          <span class="text-xs font-mono text-textDim uppercase tracking-wide">Флагманское ателье мужского стиля // Пречистенка 14</span>
+        </div>
 
-    <!-- Pricing Grid -->
-    <div id="services" class="grid grid-cols-1 md:grid-cols-3 gap-6 text-left">
-      <div class="dark-card p-8">
-        <div class="text-xs gold-accent tracking-widest uppercase mb-2">SIGNATURE CUT</div>
-        <div class="luxury-font text-2xl font-bold mb-4">Мужская стрижка</div>
-        <p class="text-sm text-neutral-400 mb-6">Мытье головы премиальным шампунем, массаж кожи головы, укладка профессиональной глиной.</p>
-        <div class="luxury-font text-3xl font-bold gold-accent">2 500 ₽</div>
-      </div>
-      <div class="dark-card p-8 border gold-border">
-        <div class="text-xs gold-accent tracking-widest uppercase mb-2">ROYAL BEARD</div>
-        <div class="luxury-font text-2xl font-bold mb-4">Моделирование бороды</div>
-        <p class="text-sm text-neutral-400 mb-6">Распаривание компрессом с эфирными маслами, подравнивание ножницами, четкий контур опасной бритвой.</p>
-        <div class="luxury-font text-3xl font-bold gold-accent">1 800 ₽</div>
-      </div>
-      <div class="dark-card p-8">
-        <div class="text-xs gold-accent tracking-widest uppercase mb-2">THE GENTLEMAN</div>
-        <div class="luxury-font text-2xl font-bold mb-4">Полный комплекс</div>
-        <p class="text-sm text-neutral-400 mb-6">Стрижка + моделирование бороды + патчи под глаза + холодный тонизирующий массаж лица.</p>
-        <div class="luxury-font text-3xl font-bold gold-accent">3 800 ₽</div>
-      </div>
-    </div>
-  </section>
+        <h1 class="text-5xl sm:text-7xl lg:text-8xl font-serif font-normal tracking-tight leading-[1.05] mb-8">
+          Геометрия линий и <span class="italic text-gold underline decoration-gold/30 underline-offset-8">ритуал</span> чистого лезвия.
+        </h1>
 
-  <footer class="max-w-7xl mx-auto px-6 py-12 border-t border-white/[0.08] text-center text-xs text-neutral-500 tracking-widest">
-    ATELIER VELVET & BLADE // IDRISOV_OS LEAD MAGNET 2026
-  </footer>
+        <p class="text-lg sm:text-xl text-textDim max-w-2xl leading-relaxed font-light mb-12">
+          Приватное пространство закрытого мужского клуба. Авторская стрижка с учетом анатомии черепа, королевское бритье клинковой бритвой с эфирными маслами кедра и сандала.
+        </p>
+
+        <div class="flex flex-wrap items-center gap-4 font-mono text-xs">
+          <a href="#configurator" class="px-8 py-4 rounded-xl bg-gold text-black font-bold uppercase tracking-wider hover:bg-white transition-all shadow-[0_0_30px_rgba(212,175,55,0.3)]">
+            Собрать персональный ритуал
+          </a>
+          <div class="px-5 py-4 rounded-xl bg-surface border border-surfaceBorder text-textDim flex items-center gap-3">
+            <span class="text-gold font-semibold">1 гость</span>
+            <span>в приватном зале без шума</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KEY METRICS BAR -->
+      <div class="mt-24 pt-12 border-t border-surfaceBorder/60 grid grid-cols-2 md:grid-cols-4 gap-8 font-mono">
+        <div>
+          <div class="text-4xl font-serif font-light text-white mb-1">60 мин</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Чистого времени работы мастера</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-gold mb-1">100%</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Стерильность инструмента (ГОСТ)</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-white mb-1">4.98</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Рейтинг гостей в Яндекс Картах</div>
+        </div>
+        <div>
+          <div class="text-4xl font-serif font-light text-gold mb-1">Single-malt</div>
+          <div class="text-xs uppercase text-textDim tracking-wider">Бар и сигарная комната</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LIVE INTERACTIVE STYLE CONFIGURATOR -->
+    <section id="configurator" class="max-w-7xl mx-auto px-6 py-28 border-b border-surfaceBorder/40">
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
+        <div>
+          <span class="text-xs font-mono text-gold uppercase tracking-widest block mb-3">// ИНТЕРАКТИВНЫЙ КОНФИГУРАТОР СТИЛЯ</span>
+          <h2 class="text-4xl sm:text-5xl font-serif font-normal">Сконструируй свой комплекс ухода</h2>
+        </div>
+        <p class="text-sm font-mono text-textDim max-w-sm">
+          Выбери анатомические параметры и состав процедур — алгоритм мгновенно подберет шеф-мастера, время и косметический протокол.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        <!-- Controls Column -->
+        <div class="lg:col-span-7 space-y-6">
+          <div class="glass-card p-6 sm:p-8 rounded-2xl">
+            <label class="text-sm font-medium text-white/90 block mb-3">1. Выберите анатомический тип лица</label>
+            <div class="grid grid-cols-3 gap-3 text-xs font-mono">
+              <button type="button" class="shape-btn active py-3 px-4 rounded-xl border border-gold bg-gold/10 text-gold text-center transition-all" data-shape="square">
+                Квадратное / Широкое
+              </button>
+              <button type="button" class="shape-btn py-3 px-4 rounded-xl border border-surfaceBorder bg-surface text-textDim text-center hover:border-gold/40 transition-all" data-shape="oval">
+                Овальное / Классик
+              </button>
+              <button type="button" class="shape-btn py-3 px-4 rounded-xl border border-surfaceBorder bg-surface text-textDim text-center hover:border-gold/40 transition-all" data-shape="angular">
+                Удлиненное / Треугольное
+              </button>
+            </div>
+          </div>
+
+          <div class="glass-card p-6 sm:p-8 rounded-2xl">
+            <label class="text-sm font-medium text-white/90 block mb-3">2. Необходимый состав ритуала</label>
+            <div class="space-y-3 text-xs font-mono">
+              <label class="flex items-center justify-between p-3 rounded-xl bg-surface border border-surfaceBorder cursor-pointer hover:border-gold/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="opt-hair" checked class="w-4 h-4 accent-gold cursor-pointer">
+                  <span>Архитектурная стрижка ножницами & Fade</span>
+                </div>
+                <span class="text-gold font-bold">3 500 ₽</span>
+              </label>
+
+              <label class="flex items-center justify-between p-3 rounded-xl bg-surface border border-surfaceBorder cursor-pointer hover:border-gold/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="opt-beard" checked class="w-4 h-4 accent-gold cursor-pointer">
+                  <span>Моделирование бороды + распаривание полотенцем</span>
+                </div>
+                <span class="text-gold font-bold">2 200 ₽</span>
+              </label>
+
+              <label class="flex items-center justify-between p-3 rounded-xl bg-surface border border-surfaceBorder cursor-pointer hover:border-gold/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="opt-spa" class="w-4 h-4 accent-gold cursor-pointer">
+                  <span>Black Mask детокс + массаж лица и головы</span>
+                </div>
+                <span class="text-gold font-bold">1 800 ₽</span>
+              </label>
+
+              <label class="flex items-center justify-between p-3 rounded-xl bg-surface border border-surfaceBorder cursor-pointer hover:border-gold/30 transition-all">
+                <div class="flex items-center gap-3">
+                  <input type="checkbox" id="opt-grey" class="w-4 h-4 accent-gold cursor-pointer">
+                  <span>Камуфляж седины натуральным пигментом</span>
+                </div>
+                <span class="text-gold font-bold">2 000 ₽</span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Calculated Summary Card -->
+        <div class="lg:col-span-5">
+          <div class="glass-card p-8 rounded-2xl border-gold/40 relative overflow-hidden">
+            <div class="absolute -right-12 -top-12 w-40 h-40 bg-gold/10 rounded-full blur-3xl pointer-events-none"></div>
+
+            <div class="flex items-center justify-between pb-6 border-b border-surfaceBorder/60">
+              <span class="text-xs font-mono uppercase tracking-wider text-textDim">Итоговая спецификация визита</span>
+              <span class="px-2 py-0.5 rounded bg-gold/10 text-gold font-mono text-[10px] font-bold border border-gold/20">CONFIRMED</span>
+            </div>
+
+            <div class="my-8">
+              <div class="text-xs font-mono text-textDim uppercase mb-1">Общая стоимость комплекса</div>
+              <div id="total-price" class="text-5xl font-serif text-white font-light mb-2">5 700 ₽</div>
+              <div class="text-xs font-mono text-gold flex items-center gap-2">
+                <span>⏱ Расчетная длительность:</span>
+                <span id="total-time" class="font-bold">75 минут</span>
+              </div>
+            </div>
+
+            <div class="space-y-4 pt-4 border-t border-surfaceBorder/60 text-xs font-mono">
+              <div class="flex justify-between">
+                <span class="text-textDim">Рекомендованная геометрия:</span>
+                <span id="geo-rec" class="text-white font-semibold">Low Fade + Четкий контур</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-textDim">Протокол косметики:</span>
+                <span class="text-gold font-semibold">Truefitt & Hill (UK)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-textDim">Свободные слоты сегодня:</span>
+                <span class="text-accent font-semibold">18:00, 19:30, 21:00</span>
+              </div>
+            </div>
+
+            <div class="mt-8 pt-6 border-t border-surfaceBorder/60">
+              <button onclick="alert('Вы записаны в Obsidian Atelier на Пречистенке! Администратор связался в Telegram.')" class="w-full py-4 rounded-xl bg-gold text-black font-bold uppercase tracking-wider text-xs font-mono hover:bg-white transition-all shadow-[0_0_25px_rgba(212,175,55,0.25)]">
+                Подтвердить бронирование
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="max-w-7xl mx-auto px-6 py-16 flex flex-col sm:flex-row items-center justify-between gap-6 font-mono text-xs text-textDim">
+      <div>
+        © 2026 OBSIDIAN ATELIER. АВТОРСКИЙ МУЖСКОЙ ГРУМИНГ.
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="https://t.me/idrisov_prod" target="_blank" class="hover:text-gold transition-colors">Telegram @idrisov_prod</a>
+        <span>Пречистенка, 14 // Ежедневно с 10:00 до 23:00</span>
+      </div>
+    </footer>
+  </main>
+
+  <script>
+    window.addEventListener('mousemove', (e) => {
+      document.documentElement.style.setProperty('--mouse-x', `${e.clientX}px`);
+      document.documentElement.style.setProperty('--mouse-y', `${e.clientY}px`);
+    });
+
+    const optHair = document.getElementById('opt-hair');
+    const optBeard = document.getElementById('opt-beard');
+    const optSpa = document.getElementById('opt-spa');
+    const optGrey = document.getElementById('opt-grey');
+    const totalPrice = document.getElementById('total-price');
+    const totalTime = document.getElementById('total-time');
+    const geoRec = document.getElementById('geo-rec');
+
+    let currentShape = 'square';
+    document.querySelectorAll('.shape-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.shape-btn').forEach(b => {
+          b.className = 'shape-btn py-3 px-4 rounded-xl border border-surfaceBorder bg-surface text-textDim text-center hover:border-gold/40 transition-all';
+        });
+        btn.className = 'shape-btn active py-3 px-4 rounded-xl border border-gold bg-gold/10 text-gold text-center transition-all';
+        currentShape = btn.getAttribute('data-shape');
+        calcTotal();
+      });
+    });
+
+    function calcTotal() {
+      let sum = 0;
+      let minutes = 0;
+
+      if (optHair.checked) { sum += 3500; minutes += 45; }
+      if (optBeard.checked) { sum += 2200; minutes += 30; }
+      if (optSpa.checked) { sum += 1800; minutes += 25; }
+      if (optGrey.checked) { sum += 2000; minutes += 30; }
+
+      totalPrice.innerText = `${sum.toLocaleString('ru-RU')} ₽`;
+      totalTime.innerText = `${minutes} минут`;
+
+      if (currentShape === 'square') {
+        geoRec.innerText = 'Mid-Fade + Смягченный контур скул';
+      } else if (currentShape === 'oval') {
+        geoRec.innerText = 'Classic Taper + Четкая окантовка';
+      } else {
+        geoRec.innerText = 'Volume Top + Широкая линия бороды';
+      }
+    }
+
+    [optHair, optBeard, optSpa, optGrey].forEach(el => el.addEventListener('change', calcTotal));
+    calcTotal();
+  </script>
 </body>
 </html>
