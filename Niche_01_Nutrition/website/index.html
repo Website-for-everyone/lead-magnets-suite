@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>NutriLife — Персональный нутрициолог & план питания</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:wght@400;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          emerald: { 900: '#0A3622', 800: '#145236', 700: '#1A6940', 600: '#22874E', 500: '#2AA85F', 400: '#4DC878', 100: '#D1FAE5' },
+          cream: { DEFAULT: '#F7F5F0', dark: '#EDE9E0', darker: '#D6D0C4' }
+        },
+        fontFamily: { sans: ['Inter', 'sans-serif'], serif: ['Playfair Display', 'serif'] }
+      }
+    }
+  }
+</script>
+<style>
+  :root { --emerald: #0A3622; --cream: #F7F5F0; --gold: #2AA85F; }
+  * { scroll-behavior: smooth; }
+  body { background: var(--cream); color: #1a1a1a; font-family: 'Inter', sans-serif; }
+  .glass { background: rgba(255,255,255,0.65); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255,255,255,0.4); }
+  .glass-dark { background: rgba(10,54,34,0.75); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(42,168,95,0.3); }
+  .hero-bg { background: linear-gradient(135deg, #0A3622 0%, #145236 40%, #1A6940 70%, #0A3622 100%); }
+  .organic-shape { border-radius: 60% 40% 30% 70% / 60% 30% 70% 40%; }
+  .btn-primary { background: linear-gradient(135deg, #2AA85F, #145236); color: white; transition: all 0.3s; box-shadow: 0 4px 20px rgba(42,168,95,0.4); }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(42,168,95,0.5); }
+  .card-hover { transition: all 0.3s; }
+  .card-hover:hover { transform: translateY(-6px); box-shadow: 0 20px 40px rgba(10,54,34,0.15); }
+  .range-slider { -webkit-appearance: none; appearance: none; height: 6px; border-radius: 3px; background: linear-gradient(to right, #2AA85F 0%, #2AA85F var(--val, 50%), #D6D0C4 var(--val, 50%), #D6D0C4 100%); }
+  .range-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 20px; height: 20px; border-radius: 50%; background: #0A3622; cursor: pointer; box-shadow: 0 2px 8px rgba(10,54,34,0.4); }
+  .meal-card { background: white; border-left: 4px solid #2AA85F; }
+  .nav-fixed { position: fixed; top: 0; width: 100%; z-index: 100; }
+  .floating-leaf { animation: floatLeaf 6s ease-in-out infinite; }
+  @keyframes floatLeaf { 0%,100%{transform:translateY(0) rotate(0deg)} 50%{transform:translateY(-15px) rotate(5deg)} }
+  .fade-in { opacity: 0; transform: translateY(30px); transition: all 0.6s ease; }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+  .testimonial-star { color: #2AA85F; }
+  .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; }
+  .faq-answer.open { max-height: 500px; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="nav-fixed glass border-b border-white/40">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 rounded-full bg-emerald-900 flex items-center justify-center">
+        <i class="fas fa-leaf text-green-400 text-xs"></i>
+      </div>
+      <span class="font-serif font-700 text-emerald-900 text-lg font-bold">NutriLife</span>
+    </div>
+    <div class="hidden md:flex items-center gap-6 text-sm font-medium">
+      <a href="#program" class="text-emerald-800 hover:text-emerald-600 transition">Программа</a>
+      <a href="#calculator" class="text-emerald-800 hover:text-emerald-600 transition">Калькулятор</a>
+      <a href="#pricing" class="text-emerald-800 hover:text-emerald-600 transition">Тарифы</a>
+      <a href="#faq" class="text-emerald-800 hover:text-emerald-600 transition">FAQ</a>
+      <a href="#contact" class="btn-primary px-5 py-2 rounded-full text-sm font-semibold">Начать</a>
+    </div>
+    <button onclick="document.getElementById('mobileMenu').classList.toggle('hidden')" class="md:hidden text-emerald-900 text-xl">
+      <i class="fas fa-bars"></i>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden md:hidden px-4 pb-4 flex flex-col gap-3 text-sm font-medium">
+    <a href="#program" class="text-emerald-800">Программа</a>
+    <a href="#calculator" class="text-emerald-800">Калькулятор</a>
+    <a href="#pricing" class="text-emerald-800">Тарифы</a>
+    <a href="#faq" class="text-emerald-800">FAQ</a>
+    <a href="#contact" class="btn-primary px-5 py-2 rounded-full text-center font-semibold">Начать</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero-bg pt-28 pb-20 relative overflow-hidden">
+  <div class="absolute top-0 right-0 w-96 h-96 opacity-10">
+    <div class="organic-shape w-full h-full bg-green-300 floating-leaf"></div>
+  </div>
+  <div class="absolute bottom-0 left-10 w-64 h-64 opacity-5">
+    <div class="organic-shape w-full h-full bg-green-200"></div>
+  </div>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 grid md:grid-cols-2 gap-12 items-center">
+    <div class="text-white">
+      <div class="inline-flex items-center gap-2 glass px-4 py-2 rounded-full text-green-300 text-sm font-medium mb-6">
+        <i class="fas fa-certificate"></i> Сертифицированный нутрициолог · 847 клиентов
+      </div>
+      <h1 class="font-serif text-4xl md:text-5xl xl:text-6xl font-bold leading-tight mb-6">
+        Персональный план питания,<br/><span class="text-green-400">который работает</span>
+      </h1>
+      <p class="text-green-100 text-lg mb-8 leading-relaxed">
+        Научный подход. Реальные результаты. Без голодовок и запретов.<br/>
+        Похудейте на 5–15 кг и получите устойчивые привычки за 8 недель.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4">
+        <a href="#contact" class="btn-primary px-8 py-4 rounded-full font-semibold text-center text-lg">
+          <i class="fas fa-arrow-right mr-2"></i>Получить план питания
+        </a>
+        <a href="#calculator" class="glass px-8 py-4 rounded-full font-semibold text-center text-white border border-white/30 hover:bg-white/10 transition">
+          <i class="fas fa-calculator mr-2"></i>Калькулятор КБЖУ
+        </a>
+      </div>
+      <div class="flex gap-8 mt-10">
+        <div><div class="text-3xl font-bold text-green-300">847</div><div class="text-green-200 text-sm">клиентов</div></div>
+        <div><div class="text-3xl font-bold text-green-300">-12кг</div><div class="text-green-200 text-sm">средний результат</div></div>
+        <div><div class="text-3xl font-bold text-green-300">96%</div><div class="text-green-200 text-sm">удержали вес</div></div>
+      </div>
+    </div>
+    <div class="relative">
+      <div class="glass rounded-3xl p-6 relative z-10">
+        <div class="text-emerald-900 font-semibold text-sm mb-4 flex items-center gap-2">
+          <i class="fas fa-utensils text-green-600"></i> Пример плана питания · Понедельник
+        </div>
+        <div class="space-y-3">
+          <div class="meal-card rounded-xl p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="font-semibold text-emerald-900 text-sm">🌅 Завтрак 7:30</div>
+                <div class="text-gray-600 text-xs mt-1">Овсянка с ягодами и греческим йогуртом</div>
+              </div>
+              <div class="text-right text-xs">
+                <div class="font-bold text-emerald-700">420 ккал</div>
+                <div class="text-gray-500">Б:22г У:58г Ж:9г</div>
+              </div>
+            </div>
+          </div>
+          <div class="meal-card rounded-xl p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="font-semibold text-emerald-900 text-sm">☀️ Обед 13:00</div>
+                <div class="text-gray-600 text-xs mt-1">Запечённая курица с киноа и овощами</div>
+              </div>
+              <div class="text-right text-xs">
+                <div class="font-bold text-emerald-700">560 ккал</div>
+                <div class="text-gray-500">Б:48г У:52г Ж:14г</div>
+              </div>
+            </div>
+          </div>
+          <div class="meal-card rounded-xl p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <div class="font-semibold text-emerald-900 text-sm">🌙 Ужин 19:00</div>
+                <div class="text-gray-600 text-xs mt-1">Лосось на пару с брокколи и авокадо</div>
+              </div>
+              <div class="text-right text-xs">
+                <div class="font-bold text-emerald-700">490 ккал</div>
+                <div class="text-gray-500">Б:38г У:18г Ж:28г</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 glass-dark rounded-2xl p-4 flex justify-between text-white text-sm">
+          <div class="text-center"><div class="font-bold text-green-400">1 470</div><div class="text-xs text-green-200">ккал/день</div></div>
+          <div class="text-center"><div class="font-bold text-green-400">108г</div><div class="text-xs text-green-200">Белок</div></div>
+          <div class="text-center"><div class="font-bold text-green-400">128г</div><div class="text-xs text-green-200">Углеводы</div></div>
+          <div class="text-center"><div class="font-bold text-green-400">51г</div><div class="text-xs text-green-200">Жиры</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TRUST BADGES -->
+<section class="bg-cream-dark py-10">
+  <div class="max-w-6xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-6">
+    <div class="text-center fade-in">
+      <div class="w-14 h-14 bg-emerald-900 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-award text-white text-xl"></i>
+      </div>
+      <div class="font-semibold text-emerald-900 text-sm">Сертификат ФНМО</div>
+      <div class="text-gray-500 text-xs">Нутрициология и диетология</div>
+    </div>
+    <div class="text-center fade-in">
+      <div class="w-14 h-14 bg-emerald-900 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-microscope text-white text-xl"></i>
+      </div>
+      <div class="font-semibold text-emerald-900 text-sm">Научный подход</div>
+      <div class="text-gray-500 text-xs">Методы доказательной медицины</div>
+    </div>
+    <div class="text-center fade-in">
+      <div class="w-14 h-14 bg-emerald-900 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-clock text-white text-xl"></i>
+      </div>
+      <div class="font-semibold text-emerald-900 text-sm">Поддержка 24/7</div>
+      <div class="text-gray-500 text-xs">Telegram-чат и голосовые созвоны</div>
+    </div>
+    <div class="text-center fade-in">
+      <div class="w-14 h-14 bg-emerald-900 rounded-2xl flex items-center justify-center mx-auto mb-3">
+        <i class="fas fa-shield-alt text-white text-xl"></i>
+      </div>
+      <div class="font-semibold text-emerald-900 text-sm">Гарантия результата</div>
+      <div class="text-gray-500 text-xs">Возврат средств, если нет динамики</div>
+    </div>
+  </div>
+</section>
+
+<!-- CALCULATOR -->
+<section id="calculator" class="py-20 bg-cream">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <span class="text-emerald-600 font-semibold text-sm uppercase tracking-wider">Инструмент</span>
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-emerald-900 mt-2">Калькулятор КБЖУ & Дефицита</h2>
+      <p class="text-gray-500 mt-3">Рассчитайте свою суточную норму калорий за 30 секунд</p>
+    </div>
+    <div class="glass rounded-3xl p-8 shadow-xl border border-white/60">
+      <div class="grid md:grid-cols-2 gap-8">
+        <div class="space-y-5">
+          <div>
+            <label class="text-emerald-900 font-medium text-sm block mb-2">Пол</label>
+            <div class="flex gap-3">
+              <button onclick="setGender('male',this)" id="male-btn" class="flex-1 py-3 rounded-xl border-2 border-emerald-600 bg-emerald-900 text-white font-medium text-sm transition">
+                <i class="fas fa-mars mr-1"></i>Мужской
+              </button>
+              <button onclick="setGender('female',this)" id="female-btn" class="flex-1 py-3 rounded-xl border-2 border-cream-darker text-emerald-800 font-medium text-sm transition hover:border-emerald-600">
+                <i class="fas fa-venus mr-1"></i>Женский
+              </button>
+            </div>
+          </div>
+          <div>
+            <label class="text-emerald-900 font-medium text-sm block mb-2">Возраст: <span id="age-display" class="text-emerald-600 font-bold">28</span> лет</label>
+            <input type="range" class="range-slider w-full" min="16" max="70" value="28" id="age-slider" oninput="updateCalc()"/>
+          </div>
+          <div>
+            <label class="text-emerald-900 font-medium text-sm block mb-2">Рост: <span id="height-display" class="text-emerald-600 font-bold">170</span> см</label>
+            <input type="range" class="range-slider w-full" min="150" max="210" value="170" id="height-slider" oninput="updateCalc()"/>
+          </div>
+          <div>
+            <label class="text-emerald-900 font-medium text-sm block mb-2">Вес: <span id="weight-display" class="text-emerald-600 font-bold">70</span> кг</label>
+            <input type="range" class="range-slider w-full" min="40" max="150" value="70" id="weight-slider" oninput="updateCalc()"/>
+          </div>
+          <div>
+            <label class="text-emerald-900 font-medium text-sm block mb-2">Активность</label>
+            <select id="activity" onchange="updateCalc()" class="w-full border-2 border-cream-darker rounded-xl px-4 py-3 text-sm bg-white focus:border-emerald-500 outline-none">
+              <option value="1.2">Сидячий образ жизни</option>
+              <option value="1.375">Лёгкая активность (1-3 раза/нед)</option>
+              <option value="1.55" selected>Умеренная (3-5 раз/нед)</option>
+              <option value="1.725">Высокая (6-7 раз/нед)</option>
+              <option value="1.9">Очень высокая (спортсмены)</option>
+            </select>
+          </div>
+        </div>
+        <div class="flex flex-col justify-center">
+          <div class="glass-dark rounded-2xl p-6 text-center mb-4">
+            <div class="text-green-300 text-sm font-medium mb-2">Ваш ИМТ</div>
+            <div class="text-5xl font-bold text-white mb-1" id="bmi-val">24.2</div>
+            <div class="text-green-400 text-sm font-medium" id="bmi-label">Норма ✓</div>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-white rounded-2xl p-4 text-center border border-cream-darker">
+              <div class="text-xs text-gray-500 mb-1">Поддержание</div>
+              <div class="text-2xl font-bold text-emerald-800" id="tdee-val">2 325</div>
+              <div class="text-xs text-gray-400">ккал/день</div>
+            </div>
+            <div class="bg-emerald-900 rounded-2xl p-4 text-center">
+              <div class="text-xs text-green-300 mb-1">Дефицит (−15%)</div>
+              <div class="text-2xl font-bold text-green-400" id="deficit-val">1 976</div>
+              <div class="text-xs text-green-200">ккал/день</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 text-center border border-cream-darker">
+              <div class="text-xs text-gray-500 mb-1">Белок</div>
+              <div class="text-2xl font-bold text-emerald-800" id="protein-val">140</div>
+              <div class="text-xs text-gray-400">г/день</div>
+            </div>
+            <div class="bg-white rounded-2xl p-4 text-center border border-cream-darker">
+              <div class="text-xs text-gray-500 mb-1">Жиры</div>
+              <div class="text-2xl font-bold text-emerald-800" id="fat-val">55</div>
+              <div class="text-xs text-gray-400">г/день</div>
+            </div>
+          </div>
+          <a href="#contact" class="btn-primary mt-5 py-4 rounded-xl font-semibold text-center text-sm">
+            Получить персональный план под эти цифры →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAM -->
+<section id="program" class="py-20 bg-emerald-900">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <span class="text-green-400 font-semibold text-sm uppercase tracking-wider">Как это работает</span>
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-white mt-2">8 недель к результату</h2>
+    </div>
+    <div class="grid md:grid-cols-4 gap-6">
+      <div class="glass-dark rounded-2xl p-6 text-white card-hover fade-in">
+        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-4 text-white font-bold text-lg">1</div>
+        <h3 class="font-semibold mb-2">Диагностика</h3>
+        <p class="text-green-200 text-sm">Анализ анамнеза, лабораторных анализов, пищевых привычек и образа жизни</p>
+      </div>
+      <div class="glass-dark rounded-2xl p-6 text-white card-hover fade-in">
+        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-4 text-white font-bold text-lg">2</div>
+        <h3 class="font-semibold mb-2">Персональный план</h3>
+        <p class="text-green-200 text-sm">Индивидуальное меню с рецептами, КБЖУ и списком покупок на 7 дней</p>
+      </div>
+      <div class="glass-dark rounded-2xl p-6 text-white card-hover fade-in">
+        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-4 text-white font-bold text-lg">3</div>
+        <h3 class="font-semibold mb-2">Сопровождение</h3>
+        <p class="text-green-200 text-sm">Еженедельные созвоны, корректировка плана, поддержка в Telegram 24/7</p>
+      </div>
+      <div class="glass-dark rounded-2xl p-6 text-white card-hover fade-in">
+        <div class="w-12 h-12 bg-green-500 rounded-xl flex items-center justify-center mb-4 text-white font-bold text-lg">4</div>
+        <h3 class="font-semibold mb-2">Результат</h3>
+        <p class="text-green-200 text-sm">-5 до -15 кг, нормализация анализов, стабильная энергия и устойчивые привычки</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="py-20 bg-cream">
+  <div class="max-w-6xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <span class="text-emerald-600 font-semibold text-sm uppercase tracking-wider">Отзывы</span>
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-emerald-900 mt-2">Результаты клиентов</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-3xl p-6 shadow-md card-hover fade-in">
+        <div class="flex gap-1 mb-3">
+          <i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">"За 10 недель минус 11 кг. Самое важное — не голодала ни дня! Планы вкусные, разнообразные, список покупок сэкономил кучу времени."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-200 rounded-full flex items-center justify-center font-bold text-emerald-800">А</div>
+          <div><div class="font-semibold text-emerald-900 text-sm">Анна К.</div><div class="text-gray-400 text-xs">Москва · -11 кг за 10 недель</div></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-3xl p-6 shadow-md card-hover fade-in">
+        <div class="flex gap-1 mb-3">
+          <i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">"Восстановила гормональный фон, перестала уставать. Тестостерон и инсулин пришли в норму. Теперь понимаю как работает моё тело."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-200 rounded-full flex items-center justify-center font-bold text-emerald-800">М</div>
+          <div><div class="font-semibold text-emerald-900 text-sm">Мария Р.</div><div class="text-gray-400 text-xs">СПб · Нормализация гормонов</div></div>
+        </div>
+      </div>
+      <div class="bg-white rounded-3xl p-6 shadow-md card-hover fade-in">
+        <div class="flex gap-1 mb-3">
+          <i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i><i class="fas fa-star testimonial-star"></i>
+        </div>
+        <p class="text-gray-700 text-sm leading-relaxed mb-4">"Как IT-специалист ценю данные. Получил детальную аналитику по анализам, персональный план и результат: -8 кг и энергия весь день."</p>
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 bg-emerald-200 rounded-full flex items-center justify-center font-bold text-emerald-800">Д</div>
+          <div><div class="font-semibold text-emerald-900 text-sm">Дмитрий В.</div><div class="text-gray-400 text-xs">Казань · -8 кг за 8 недель</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing" class="py-20 bg-cream-dark">
+  <div class="max-w-5xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <span class="text-emerald-600 font-semibold text-sm uppercase tracking-wider">Инвестиция в здоровье</span>
+      <h2 class="font-serif text-3xl md:text-4xl font-bold text-emerald-900 mt-2">Выберите программу</h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-white rounded-3xl p-7 shadow card-hover fade-in">
+        <div class="text-emerald-600 font-semibold text-sm mb-2">СТАРТ</div>
+        <div class="text-4xl font-bold text-emerald-900 mb-1">4 900 ₽</div>
+        <div class="text-gray-400 text-sm mb-6">разовая консультация</div>
+        <ul class="space-y-3 text-sm text-gray-700 mb-8">
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Анализ анамнеза и анализов</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>План питания на 7 дней</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Список покупок</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Созвон 60 мин</li>
+        </ul>
+        <a href="#contact" class="block w-full text-center border-2 border-emerald-700 text-emerald-800 py-3 rounded-xl font-semibold hover:bg-emerald-50 transition">Выбрать</a>
+      </div>
+      <div class="bg-emerald-900 rounded-3xl p-7 shadow-xl card-hover fade-in relative">
+        <div class="absolute -top-4 left-1/2 -translate-x-1/2 bg-green-400 text-emerald-900 text-xs font-bold px-4 py-1 rounded-full">ПОПУЛЯРНЫЙ</div>
+        <div class="text-green-400 font-semibold text-sm mb-2">ПРОГРЕСС</div>
+        <div class="text-4xl font-bold text-white mb-1">19 900 ₽</div>
+        <div class="text-green-300 text-sm mb-6">8 недель сопровождения</div>
+        <ul class="space-y-3 text-sm text-green-100 mb-8">
+          <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-0.5"></i>Всё из «Старт»</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-0.5"></i>Еженедельные обновления меню</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-0.5"></i>Поддержка в Telegram 24/7</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-0.5"></i>4 созвона за 8 недель</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-green-400 mt-0.5"></i>Гарантия результата</li>
+        </ul>
+        <a href="#contact" class="btn-primary block w-full text-center py-3 rounded-xl font-semibold">Выбрать</a>
+      </div>
+      <div class="bg-white rounded-3xl p-7 shadow card-hover fade-in">
+        <div class="text-emerald-600 font-semibold text-sm mb-2">VIP</div>
+        <div class="text-4xl font-bold text-emerald-900 mb-1">39 900 ₽</div>
+        <div class="text-gray-400 text-sm mb-6">3 месяца · полное ведение</div>
+        <ul class="space-y-3 text-sm text-gray-700 mb-8">
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Всё из «Прогресс»</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Интерпретация анализов</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Схема БАД и добавок</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Ежедневный контроль дневника</li>
+          <li class="flex items-start gap-2"><i class="fas fa-check text-emerald-500 mt-0.5"></i>Безлимитные созвоны</li>
+        </ul>
+        <a href="#contact" class="block w-full text-center border-2 border-emerald-700 text-emerald-800 py-3 rounded-xl font-semibold hover:bg-emerald-50 transition">Выбрать</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq" class="py-20 bg-cream">
+  <div class="max-w-3xl mx-auto px-4">
+    <div class="text-center mb-12">
+      <h2 class="font-serif text-3xl font-bold text-emerald-900">Часто задаваемые вопросы</h2>
+    </div>
+    <div class="space-y-3" id="faq-list">
+      <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+        <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-emerald-900 flex justify-between items-center">
+          Нужно ли сдавать анализы перед началом?<i class="fas fa-chevron-down text-emerald-500 transition-transform"></i>
+        </button>
+        <div class="faq-answer px-6"><p class="text-gray-600 text-sm pb-4">Анализы не обязательны, но крайне желательны — особенно общий анализ крови, биохимия, гормоны щитовидной железы. Если у вас уже есть результаты — отлично. Если нет — подскажем, какой минимальный пакет сдать.</p></div>
+      </div>
+      <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+        <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-emerald-900 flex justify-between items-center">
+          Подходит ли программа вегетарианцам и веганам?<i class="fas fa-chevron-down text-emerald-500 transition-transform"></i>
+        </button>
+        <div class="faq-answer px-6"><p class="text-gray-600 text-sm pb-4">Да, все планы составляются индивидуально с учётом ваших пищевых предпочтений и ограничений. Мы успешно работаем с вегетарианцами, веганами и людьми с пищевыми непереносимостями.</p></div>
+      </div>
+      <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+        <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-emerald-900 flex justify-between items-center">
+          Когда появятся первые результаты?<i class="fas fa-chevron-down text-emerald-500 transition-transform"></i>
+        </button>
+        <div class="faq-answer px-6"><p class="text-gray-600 text-sm pb-4">Большинство клиентов замечают улучшение самочувствия, рост энергии и снижение отёчности уже к концу первой недели. Визуальные изменения — к концу 2-3 недели при соблюдении плана.</p></div>
+      </div>
+      <div class="bg-white rounded-2xl overflow-hidden shadow-sm">
+        <button onclick="toggleFaq(this)" class="w-full text-left px-6 py-4 font-semibold text-emerald-900 flex justify-between items-center">
+          Как работает гарантия результата?<i class="fas fa-chevron-down text-emerald-500 transition-transform"></i>
+        </button>
+        <div class="faq-answer px-6"><p class="text-gray-600 text-sm pb-4">Если вы соблюдали план питания, но не получили результата к концу программы — мы возвращаем 100% стоимости или продлеваем сопровождение на 4 недели бесплатно. Гарантия действует при наличии дневника питания.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT FORM -->
+<section id="contact" class="py-20 bg-emerald-900">
+  <div class="max-w-2xl mx-auto px-4">
+    <div class="text-center mb-10">
+      <h2 class="font-serif text-3xl font-bold text-white">Запишитесь на бесплатную консультацию</h2>
+      <p class="text-green-200 mt-3">15 минут · Zoom или Telegram · Оценим вашу ситуацию</p>
+    </div>
+    <div class="glass rounded-3xl p-8">
+      <form id="lead-form" class="space-y-4" onsubmit="submitForm(event)">
+        <div class="grid sm:grid-cols-2 gap-4">
+          <input type="text" placeholder="Ваше имя" required class="bg-white/80 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 ring-green-400 w-full"/>
+          <input type="tel" placeholder="+7 (___) ___-__-__" required class="bg-white/80 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 ring-green-400 w-full"/>
+        </div>
+        <input type="email" placeholder="Email" required class="bg-white/80 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 ring-green-400 w-full"/>
+        <select class="bg-white/80 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 ring-green-400 w-full text-gray-600">
+          <option value="">Ваша цель</option>
+          <option>Похудение (снижение веса)</option>
+          <option>Набор мышечной массы</option>
+          <option>Нормализация здоровья / анализов</option>
+          <option>Спортивное питание</option>
+          <option>Просто питаться правильно</option>
+        </select>
+        <textarea rows="3" placeholder="Расскажите коротко о себе и своей ситуации" class="bg-white/80 rounded-xl px-4 py-3 text-sm outline-none focus:ring-2 ring-green-400 w-full resize-none"></textarea>
+        <button type="submit" class="btn-primary w-full py-4 rounded-xl font-semibold text-lg">
+          <i class="fas fa-paper-plane mr-2"></i>Записаться на консультацию
+        </button>
+        <p class="text-green-300 text-xs text-center">Нажимая кнопку, вы соглашаетесь с обработкой персональных данных</p>
+      </form>
+      <div id="form-success" class="hidden text-center py-8">
+        <div class="text-6xl mb-4">🌿</div>
+        <h3 class="text-white text-xl font-bold mb-2">Заявка принята!</h3>
+        <p class="text-green-200">Свяжусь с вами в течение 2 часов в рабочее время</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="bg-emerald-900 border-t border-green-800 py-8">
+  <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="flex items-center gap-2">
+      <div class="w-7 h-7 rounded-full bg-green-500 flex items-center justify-center"><i class="fas fa-leaf text-white text-xs"></i></div>
+      <span class="text-white font-bold">NutriLife</span>
+    </div>
+    <p class="text-green-400 text-xs">© 2025 NutriLife. Все права защищены. ИП Петрова Е.А.</p>
+    <div class="flex gap-4 text-green-400">
+      <a href="#" class="hover:text-white transition"><i class="fab fa-telegram text-lg"></i></a>
+      <a href="#" class="hover:text-white transition"><i class="fab fa-instagram text-lg"></i></a>
+      <a href="#" class="hover:text-white transition"><i class="fab fa-vk text-lg"></i></a>
+    </div>
+  </div>
+</footer>
+
+<script>
+let gender = 'male';
+function setGender(g, btn) {
+  gender = g;
+  document.getElementById('male-btn').className = 'flex-1 py-3 rounded-xl border-2 border-cream-darker text-emerald-800 font-medium text-sm transition hover:border-emerald-600';
+  document.getElementById('female-btn').className = 'flex-1 py-3 rounded-xl border-2 border-cream-darker text-emerald-800 font-medium text-sm transition hover:border-emerald-600';
+  btn.className = 'flex-1 py-3 rounded-xl border-2 border-emerald-600 bg-emerald-900 text-white font-medium text-sm transition';
+  updateCalc();
+}
+function updateCalc() {
+  const age = +document.getElementById('age-slider').value;
+  const height = +document.getElementById('height-slider').value;
+  const weight = +document.getElementById('weight-slider').value;
+  const activity = +document.getElementById('activity').value;
+  document.getElementById('age-display').textContent = age;
+  document.getElementById('height-display').textContent = height;
+  document.getElementById('weight-display').textContent = weight;
+  ['age-slider','height-slider','weight-slider'].forEach(id => {
+    const el = document.getElementById(id);
+    const min = +el.min, max = +el.max, val = +el.value;
+    el.style.setProperty('--val', ((val-min)/(max-min)*100)+'%');
+  });
+  let bmr = gender === 'male'
+    ? 10*weight + 6.25*height - 5*age + 5
+    : 10*weight + 6.25*height - 5*age - 161;
+  const tdee = Math.round(bmr * activity);
+  const deficit = Math.round(tdee * 0.85);
+  const bmi = (weight / ((height/100)**2)).toFixed(1);
+  document.getElementById('tdee-val').textContent = tdee.toLocaleString('ru');
+  document.getElementById('deficit-val').textContent = deficit.toLocaleString('ru');
+  document.getElementById('bmi-val').textContent = bmi;
+  const bmiN = +bmi;
+  let bmiLabel = bmiN < 18.5 ? 'Дефицит ⚠️' : bmiN < 25 ? 'Норма ✓' : bmiN < 30 ? 'Избыток ⚠️' : 'Ожирение ⚠️';
+  document.getElementById('bmi-label').textContent = bmiLabel;
+  document.getElementById('protein-val').textContent = Math.round(weight * 2);
+  document.getElementById('fat-val').textContent = Math.round(deficit * 0.28 / 9);
+}
+function toggleFaq(btn) {
+  const answer = btn.nextElementSibling;
+  const icon = btn.querySelector('i');
+  answer.classList.toggle('open');
+  icon.style.transform = answer.classList.contains('open') ? 'rotate(180deg)' : '';
+}
+function submitForm(e) {
+  e.preventDefault();
+  document.getElementById('lead-form').classList.add('hidden');
+  document.getElementById('form-success').classList.remove('hidden');
+}
+// Fade-in on scroll
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.15 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+updateCalc();
+</script>
+</body>
+</html>
